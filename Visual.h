@@ -1,0 +1,13 @@
+//
+// Created by luisf on 2/11/2025.
+//
+
+#ifndef PROYECTO_PANADERIA_BUEN_TRIGO_VISUAL_H
+#define PROYECTO_PANADERIA_BUEN_TRIGO_VISUAL_H
+
+
+class Visual {
+};
+
+
+#endif //PROYECTO_PANADERIA_BUEN_TRIGO_VISUAL_H
