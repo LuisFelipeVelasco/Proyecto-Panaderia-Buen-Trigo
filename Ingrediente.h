@@ -12,16 +12,19 @@ class Ingrediente {
 
     private:
 
-    int Nombre;
+    int Id;
     int Cantidad;
+    int Unidad;
 //    Inventario inv;
 
     public:
     Ingrediente();
-    Ingrediente(int nombre, int Cantidad);
+    Ingrediente(int id, int Cantidad);
+    Ingrediente(int Id , int Unidad , int Cantidad);
   //  void SubirInventario(Inventario inv);
-    int getNombre();
-    int getCantidad();
+    int getId() const;
+    int getCantidad() const;
+    int getUnidad() const;
 };
 
 

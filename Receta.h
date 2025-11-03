@@ -18,9 +18,12 @@ public:
     Receta(std::string& Nombre, std::vector<Ingrediente>& ingrediente);
     ~Receta();
     void mostrarReceta();
-    void RegistrarReceta();
-    std::vector<Ingrediente> getIngredientes();
-    std::string getNombre();
+    std::string getNombre() const;
+    std::vector<Ingrediente> getRecetas() const;
+
+    // helpers sin referencias
+    static Receta parseLine(std::string line);
+    static std::string trim(std::string s);
 };
 
 

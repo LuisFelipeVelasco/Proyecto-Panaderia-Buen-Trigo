@@ -1,3 +1,2 @@
+Pan agridulce: 1,10; 3,2; 4,5; 
 
-
-Pan blanco:1,10; 2,5; 

@@ -17,9 +17,10 @@ public:
     Panadero(std::string& nombre, std::string& apellido);
     void RegistrarReceta(Receta receta);
     void modificarReceta(Receta receta);
-    void eliminarReceta(Receta receta);
+    void eliminarReceta(std::string NombreReceta);
     void registrarNuevaProduccion(Receta receta);
     std::string consultarStock();
+    std::vector<Receta> GetRecetas();
 
 };
 

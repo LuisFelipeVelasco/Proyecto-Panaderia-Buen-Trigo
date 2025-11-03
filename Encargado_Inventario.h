@@ -8,15 +8,18 @@
 #include "Personal.h"
 #include "Ingrediente.h"
 #include "Inventario.h"
+#include "iostream"
+#include "vector"
 class Encargado_Inventario:public Personal {
 
     protected:
 
     Inventario inv;
+    const std::string fileName = "Ingredientes.txt";
 
     public:
     Encargado_Inventario(std::string& nombre, std::string& apellidos);
-    void RegistarNuevoIngredientes(Ingrediente ingrediente);
+    void RegistarNuevoIngrediente(std::vector<Ingrediente>& ingredientes);
     void EliminarIngrediente(Ingrediente ingrediente);
     void EditarIngrediente(Ingrediente ingrediente);
     std::string ReporteExistencias();
