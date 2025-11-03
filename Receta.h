@@ -18,6 +18,9 @@ public:
     Receta(std::string& Nombre, std::vector<Ingrediente>& ingrediente);
     ~Receta();
     void mostrarReceta();
+    void RegistrarReceta();
+    std::vector<Ingrediente> getIngredientes();
+    std::string getNombre();
 };
 
 

@@ -11,7 +11,7 @@
 #include "Receta.h"
 
 int main() {
-    int opcion=0;
+    int opcion1=0;
     std::vector<Ingrediente> receta ={};
     do {
 
@@ -20,11 +20,11 @@ int main() {
         std::cout << "2. Encargado del inventario\n";
         std::cout << "3. Administrador\n";
         std::cout << "4. Salir\n";
-        std::cout << "Escoge tu rol  o Salir ";
-        std::cin >> opcion;
+        std::cout << "Escoge tu rol  o Salir: ";
+        std::cin >> opcion1;
 
 
-        if (opcion==1) {
+        if (opcion1==1) {
 
             std::string nombre{};
             std::string apellido{};
@@ -40,9 +40,11 @@ int main() {
             do {
                 std::cout<<"\n";
                 std::cout << "1. Registrar Receta\n";
-                std::cout << "2. Registrar Nueva Produccion\n";
-                std::cout << "3. Consultar STOCK\n";
-                std::cout << "4. Salir\n";
+                std::cout << "2. Modificar Receta\n";
+                std::cout << "3. Eliminar Receta\n ";
+                std::cout << "4. Registrar Nueva Produccion\n";
+                std::cout << "5. Consultar STOCK\n";
+                std::cout << "6. Salir\n";
                 std::cout << "Panadero , escoge que quieres hacer";
                 std::cin >> opcion;
 
@@ -51,11 +53,11 @@ int main() {
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     std::cout<<"Digita El nombre de la receta: \n";
                     getline(std::cin, nombre);
+
                     int ingrediente{};
                     int Cantidad{};
 
                     do {
-                        std::cout << "Escoge el ingrediente de tu receta\n ";
                         std::cout << "1. Harina\n";
                         std::cout << "2. Azucar\n";
                         std::cout << "3. Sal\n";
@@ -63,24 +65,39 @@ int main() {
                         std::cout << "5. Huevos\n";
                         std::cout << "6. Canela\n";
                         std::cout << "7. No mas ingredientes\n";
+                        std::cout << "Escoge el ingrediente de tu receta ";
                         std::cin >> ingrediente;
                         if (ingrediente!=7) {
                             std::cout<<"Digita la cantidad del ingrediente: ";
                             std::cin>>Cantidad;
                             Ingrediente ingredientenuevo(ingrediente, Cantidad);
                             receta.push_back(ingredientenuevo);
+
                         }
                     }while (ingrediente!=7);
 
                     Receta RecetaNueva(nombre, receta);
                     RecetaNueva.mostrarReceta();
+                    Panadero1.RegistrarReceta(RecetaNueva);
+                }
+                else if (opcion==2) {
+
+
+
+
+
+                }
+
+                else if (opcion==4) {
+                    Panadero1.CerrarSesion();
+                    opcion1=4;
                 }
 
 
 
             }while (opcion!=4);
         }
-        else if (opcion==2) {
+        else if (opcion1==2) {
             std::string nombre{};
             std::string apellido{};
             std::cout<<" Digita tu nombre";
@@ -94,7 +111,7 @@ int main() {
 
         }
 
-    } while (opcion != 4);
+    } while (opcion1 != 4);
 
     return 0;
 }

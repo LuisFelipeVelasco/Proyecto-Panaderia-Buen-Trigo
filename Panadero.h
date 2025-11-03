@@ -11,12 +11,11 @@
 
 class Panadero: public Personal {
 protected:
+    const std::string fileName = "Recetas.txt";
 
 public:
     Panadero(std::string& nombre, std::string& apellido);
-    void registrarReceta(Receta receta);
-    void agregarIngrediente(Ingrediente ingrediente);
-    void agregarCamtdidad(Ingrediente ingrediente);
+    void RegistrarReceta(Receta receta);
     void modificarReceta(Receta receta);
     void eliminarReceta(Receta receta);
     void registrarNuevaProduccion(Receta receta);
