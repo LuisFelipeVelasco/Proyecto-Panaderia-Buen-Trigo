@@ -10,22 +10,30 @@
 #include "Inventario.h"
 #include "iostream"
 #include "vector"
+#include <fstream>
+
 class Encargado_Inventario:public Personal {
 
-    protected:
+protected:
 
     Inventario inv;
     const std::string fileName = "Ingredientes.txt";
 
-    public:
+    // Función auxiliar privada
+    std::string obtenerNombreIngrediente(int id);
+
+public:
     Encargado_Inventario(std::string& nombre, std::string& apellidos);
     void RegistarNuevoIngrediente(std::vector<Ingrediente>& ingredientes);
-    void EliminarIngrediente(Ingrediente ingrediente);
-    void EditarIngrediente(Ingrediente ingrediente);
+
+    // Nuevos métodos implementados
+    void ConsultarInventario();           // Requerimiento 1
+    void VerificarInventarioBajo();       // Requerimiento 2
+    void EliminarIngrediente();           // Requerimiento 3
+    void EditarIngrediente();             // Requerimiento 4
+
     std::string ReporteExistencias();
     std::string ReporteInventarioYStock();
-
-
 };
 
 
