@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-Personal::Personal(std::string& nombre, std::string& apellido): Nombre(nombre), Apellido(apellido) {}
+Personal::Personal(const std::string& nombre, const std::string& apellido): Nombre(nombre), Apellido(apellido) {}
 
 std::string Personal::getNombre() {return Nombre;}
 std::string Personal::getApellido() {return Apellido;}

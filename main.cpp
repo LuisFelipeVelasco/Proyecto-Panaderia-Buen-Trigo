@@ -10,9 +10,10 @@
 #include "Receta.h"
 
 int main() {
+    Encargado_Inventario Encargado1("sin asignar", "sin asignar");
+
     int opcion1=0;
     do {
-
         std::cout << "\n===== Sistema de Gestion : Panaderia =====\n";
         std::cout << "1. Panadero\n";
         std::cout << "2. Encargado del inventario\n";
@@ -95,10 +96,45 @@ int main() {
                     std::getline(std::cin, nombreReceta);
                     Panadero1.eliminarReceta(nombreReceta);
                 }
-                else if (opcion==6) {
-                    Panadero1.CerrarSesion();
-                    opcion1=4;
+                else if (opcion == 4) {
+                    std::string nombreReceta;
+                    int cantidad;
+
+                    std::cin.ignore();
+                    std::cout<<"Nombre de la receta: ";
+                    getline(std::cin, nombreReceta);
+
+                    std::cout << "Cantidad a producir: ";
+                    std::cin >> cantidad;
+
+                    // Buscar receta en archivo
+                    auto recetas = Panadero1.GetRecetas();
+                    Receta* r = nullptr;
+
+                    for (auto &rc : recetas) {
+                        if (rc.getNombre() == nombreReceta) {
+                            r = &rc;
+                            break;
+                        }
+                    }
+
+                    if (!r) {
+                        std::cout << "❌ La receta no existe.\n";
+                        continue;
+                    }
+                    // Primero intenta producir (descontar inventario)
+                    Panadero1.RegistrarProduccion(nombreReceta, cantidad, Encargado1);
+
+                    // Registrar producción en archivo
+                    Panadero1.registrarNuevaProduccion(*r, cantidad);
                 }
+                else if (opcion == 5) {
+                    std::cout << "\n=== STOCK ACTUAL ===\n";
+                    std::string stock = Panadero1.consultarStock();
+                    std::cout << stock << std::endl;
+
+                }
+
 
             }while (opcion!=6);
         }
@@ -110,6 +146,7 @@ int main() {
             getline(std::cin, nombre);
             std::cout<<"Digita tu apellido: ";
             getline(std::cin, apellido);
+            // Actualiza el encargado existente (NO lo vuelvas a declarar)
             Encargado_Inventario Encargado1(nombre, apellido);
             Encargado1.IniciarSesion();
 
@@ -124,4 +161,65 @@ int main() {
                 std::cout<<"6. Ver Resumen del inventario y del Stock\n";
                 std::cout<<"7. Salir\n";
                 std::cout<<"Seleccione una opcion: ";
-                std::
+                std::cin>>opcion2;
+
+                if (opcion2==1) {
+                    std::vector<Ingrediente> ingredientes{};
+                    std::string unidad{};
+                    int Id{}, Cantidad{}, Unidad{};
+                    do {
+                        std::cout << "1. Harina\n";
+                        std::cout << "2. Azucar\n";
+                        std::cout << "3. Sal\n";
+                        std::cout << "4. Levadura\n";
+                        std::cout << "5. Huevos\n";
+                        std::cout << "6. Canela\n";
+                        std::cout << "7. Queso\n";
+                        std::cout << "8. Mantequilla\n";
+                        std::cout << "9. No mas ingredientes\n";
+                        std::cout << "Escoge el ingrediente: ";
+                        std::cin >> Id;
+                        if (Id!=9) {
+                            std::cout << "1. Libra\n";
+                            std::cout << "2. Gramo\n";
+                            std::cout<<"Escoga la Unidad de medida\n";
+                            std::cin>>Unidad;
+
+                            std::cout<<"Digita la cantidad del ingrediente";
+                            std::cin>>Cantidad;
+
+                            Ingrediente ingredientenuevo(Id,Unidad,Cantidad);
+                            ingredientes.push_back(ingredientenuevo);
+
+
+                        }
+                    }while (Id!=9);
+                    Encargado1.RegistarNuevoIngrediente(ingredientes);
+                }
+                else if (opcion2==2) {
+                    Encargado1.ConsultarInventario();
+                }
+                else if (opcion2==3) {
+                    Encargado1.VerificarInventarioBajo();
+                }
+                else if (opcion2==4) {
+                    Encargado1.EditarIngrediente();
+                }
+                else if (opcion2==5) {
+                    Encargado1.EliminarIngrediente();
+                }
+                else if (opcion2==6) {
+                }
+                else if (opcion2==7) {
+                    Encargado1.CerrarSesion();
+                    opcion1=4;
+                }
+
+
+
+
+
+            }while (opcion2!=7);
+        }
+    }while (opcion1!=4);
+}

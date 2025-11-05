@@ -11,7 +11,8 @@ class Personal {
     std::string Nombre;
     std::string Apellido;
     public:
-    Personal(std::string& nombre, std::string& apellido);
+    Personal(const std::string& nombre,const  std::string& apellido);
+    Personal()=default;
     std::string getNombre();
     std::string getApellido();
     void IniciarSesion();

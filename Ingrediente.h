@@ -25,6 +25,9 @@ class Ingrediente {
     int getId() const;
     int getCantidad() const;
     int getUnidad() const;
+    void setCantidad(int c) { Cantidad = c; }
+    void setUnidad(int u) { Unidad = u; }
+
 };
 
 

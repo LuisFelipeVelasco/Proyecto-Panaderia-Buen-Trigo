@@ -20,6 +20,8 @@ public:
     void mostrarReceta();
     std::string getNombre() const;
     std::vector<Ingrediente> getRecetas() const;
+    const std::vector<Ingrediente>& getIngredientes() const;
+
 
     // helpers sin referencias
     static Receta parseLine(std::string line);

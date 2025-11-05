@@ -7,21 +7,26 @@
 #include "Personal.h"
 #include "Receta.h"
 #include "Ingrediente.h"
-
+#include "Encargado_Inventario.h"
 
 class Panadero: public Personal {
 protected:
     const std::string fileName = "Recetas.txt";
+    const std::string fileProduccion = "STOCK.txt";
+
 
     // Función auxiliar privada
     std::string obtenerNombreIngrediente(int id);
 
 public:
-    Panadero(std::string& nombre, std::string& apellido);
+    Panadero(const std::string& nombre,const std::string& apellido);
     void RegistrarReceta(Receta receta);
     void modificarReceta(std::string nombreReceta);
     void eliminarReceta(std::string NombreReceta);
-    void registrarNuevaProduccion(Receta receta);
+    void registrarNuevaProduccion(const Receta& receta, int cantidad);
+    void RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado);
+
+
     std::string consultarStock();
     std::vector<Receta> GetRecetas();
 

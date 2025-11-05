@@ -23,7 +23,9 @@ protected:
     std::string obtenerNombreIngrediente(int id);
 
 public:
-    Encargado_Inventario(std::string& nombre, std::string& apellidos);
+    Encargado_Inventario(const std::string& nombre,const std::string& apellido);
+    Encargado_Inventario() : Personal("", "") {}
+
     void RegistarNuevoIngrediente(std::vector<Ingrediente>& ingredientes);
 
     // Nuevos métodos implementados
@@ -31,6 +33,8 @@ public:
     void VerificarInventarioBajo();       // Requerimiento 2
     void EliminarIngrediente();           // Requerimiento 3
     void EditarIngrediente();             // Requerimiento 4
+    bool descontarIngredientes(const std::vector<Ingrediente> &ingredientesNecesarios, int cantidad);
+
 
     std::string ReporteExistencias();
     std::string ReporteInventarioYStock();

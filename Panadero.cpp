@@ -11,8 +11,14 @@
 #include "Receta.h"
 #include <cstdio>
 #include <sstream>
+#include <Encargado_Inventario.h>
 
-Panadero::Panadero(std::string& nombre, std::string& apellido): Personal(nombre,apellido) {}
+
+Panadero::Panadero(const std::string& nombre, const std::string& apellido)
+: Personal(nombre, apellido) {
+    std::ofstream f(fileProduccion, std::ios::app);
+    f.close();
+}
 
 void Panadero::RegistrarReceta(Receta receta) {
     std::ofstream file(fileName , std::ios::app);
@@ -202,4 +208,74 @@ std::string Panadero::obtenerNombreIngrediente(int id) {
         case 8: return "Mantequilla";
         default: return "Desconocido";
     }
+}
+void Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado){
+
+    auto recetas = GetRecetas();
+    Receta* r = nullptr;
+
+    // Buscar receta
+    for(auto &rc : recetas){
+        if(rc.getNombre() == nombreReceta){
+            r = &rc;
+            break;
+        }
+    }
+
+    if(!r){
+        std::cout << "❌ La receta no existe.\n";
+        return;
+    }
+
+    // Obtener ingredientes
+    auto lista = r->Receta::getIngredientes();
+    std::vector<Ingrediente> totalNecesario;
+
+    // Multiplicar ingredientes
+    for(const auto &i : lista){
+        totalNecesario.emplace_back(i.getId(), i.getCantidad() * cantidad);
+    }
+
+    // Descontar ingredientes
+    if(!encargado.descontarIngredientes(totalNecesario, cantidad)){
+        std::cout << "🚨 No hay suficientes ingredientes.\n";
+        return;
+    }
+
+    std::cout << "✅ Se produjeron " << cantidad
+              << " unidades de " << nombreReceta << "\n";
+}
+void Panadero::registrarNuevaProduccion(const Receta& receta, int cantidad) {
+    std::ofstream file(fileProduccion, std::ios::app);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: No se pudo abrir STOCK.txt\n";
+        return;
+    }
+
+    file << receta.getNombre() << " , " << cantidad << " unidades\n";
+    file.close();
+
+    std::cout << "Producción registrada exitosamente ✅\n";
+}
+std::string Panadero::consultarStock() {
+    std::ifstream file(fileProduccion);
+    if (!file.is_open()) {
+        return "🚨 No se pudo abrir el archivo de stock.";
+    }
+
+    std::string linea;
+    std::string contenido;
+
+    while (getline(file, linea)) {
+        contenido += linea + "\n";
+    }
+
+    file.close();
+
+    if (contenido.empty()) {
+        return "📦 Stock vacío. Aún no hay producciones registradas.";
+    }
+
+    return contenido;
 }

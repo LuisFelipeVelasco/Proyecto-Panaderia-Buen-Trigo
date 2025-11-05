@@ -8,7 +8,10 @@
 #include <algorithm>
 #include <cstdio>
 
-Encargado_Inventario::Encargado_Inventario(std::string &nombre, std::string &apellidos): Personal(nombre,apellidos) {}
+Encargado_Inventario::Encargado_Inventario(const std::string &nombre, const std::string &apellido)
+    : Personal(nombre, apellido) {}
+
+
 
 void Encargado_Inventario::RegistarNuevoIngrediente(std::vector<Ingrediente>& ingredientes ) {
     std::ofstream file(fileName , std::ios::app);
@@ -329,4 +332,70 @@ std::string Encargado_Inventario::obtenerNombreIngrediente(int id) {
         case 8: return "Mantequilla";
         default: return "Desconocido";
     }
+}
+bool Encargado_Inventario::descontarIngredientes(
+        const std::vector<Ingrediente> &ingredientesNecesarios,
+        int cantidadProduccion)
+{
+    std::ifstream in(fileName);
+    if (!in.is_open()) {
+        std::cerr << "No se pudo abrir inventario.\n";
+        return false;
+    }
+
+    std::vector<std::string> lineas;
+    std::string line;
+    while (std::getline(in, line))
+        if (!line.empty())
+            lineas.push_back(line);
+    in.close();
+
+    // Copia en memoria
+    std::vector<Ingrediente> inventario;
+    for (auto &l : lineas) {
+        std::stringstream ss(l);
+        int id, cant, uni;
+        char d;
+        ss >> id >> d >> cant >> d >> uni;
+        inventario.emplace_back(id, uni, cant);
+    }
+
+    // Verificar existencias
+    for (auto &ingReceta : ingredientesNecesarios) {
+        int totalNecesario = ingReceta.getCantidad() * cantidadProduccion;
+        bool encontrado = false;
+
+        for (auto &ingInv : inventario) {
+            if (ingInv.getId() == ingReceta.getId()) {
+                encontrado = true;
+                if (ingInv.getCantidad() < totalNecesario)
+                    return false;
+                break;
+            }
+        }
+        if (!encontrado) return false;
+    }
+
+    // Descontar
+    for (auto &ingReceta : ingredientesNecesarios) {
+        int totalNecesario = ingReceta.getCantidad() * cantidadProduccion;
+        for (auto &ingInv : inventario) {
+            if (ingInv.getId() == ingReceta.getId()) {
+                ingInv.setCantidad(ingInv.getCantidad() - totalNecesario);
+                break;
+            }
+        }
+    }
+
+    // Reescribir inventario
+    std::ofstream out(fileName, std::ios::trunc);
+    for (auto &i : inventario) {
+        out << i.getId() << " , "
+            << i.getCantidad() << " , "
+            << i.getUnidad()
+            << ";\n";
+    }
+    out.close();
+
+    return true;
 }

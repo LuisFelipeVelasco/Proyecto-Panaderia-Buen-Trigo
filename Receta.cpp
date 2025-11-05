@@ -62,3 +62,6 @@ Receta Receta::parseLine(std::string line) {
     }
     return Receta(nombre, ings);
 }
+const std::vector<Ingrediente>& Receta::getIngredientes() const {
+    return Ingredientes;
+}
