@@ -8,6 +8,7 @@
 #include <limits>
 #include "Ingrediente.h"
 #include "Receta.h"
+#include "Administrador.h"
 
 int main() {
     Encargado_Inventario Encargado1("sin asignar", "sin asignar");
@@ -221,5 +222,45 @@ int main() {
 
             }while (opcion2!=7);
         }
+        else if (opcion1==3) {
+
+            std::string nombre{};
+            std::string apellido{};
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout<<"Digita tu nombre: ";
+            getline(std::cin, nombre);
+            std::cout<<"Digita tu apellido: ";
+            getline(std::cin, apellido);
+
+            Administrador Administrador1(nombre, apellido);
+            Administrador1.IniciarSesion();
+
+            int opcion3{};
+            do {
+                std::cout<<"\n===== MENU ADMINISTRADOR =====\n";
+                std::cout<<"1. Consultar Inventario\n";
+                std::cout<<"2. Imprimir reporte\n";
+                std::cout<<"3. Ver resumen inventario / stock\n";
+                std::cout<<"4. Salir\n";
+                std::cout<<"Seleccione una opcion: ";
+                std::cin>>opcion3;
+
+                if (opcion3==1) {
+                    Administrador1.ConsultarInventario();
+                }
+                else if (opcion3==2) {
+                    // imprimir reporte
+                    Administrador1.exportarReporte();
+                }
+                else if (opcion3==3) {
+                    // resumen
+                }
+
+            }while (opcion3!=4);
+        }
+
+
+
+
     }while (opcion1!=4);
 }
