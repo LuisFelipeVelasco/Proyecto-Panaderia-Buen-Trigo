@@ -1,3 +1,19 @@
+/*
+===============================================================================
+                 IMPLEMENTACIÓN DE LA CLASE Administrador
+===============================================================================
+Rol en el dominio:
+- Consultar resúmenes globales de inventario y stock para supervisión (HU07, HU08)
+- Exportar reportes a .txt para control y seguimiento (HU08)
+- Supervisar la disponibilidad de productos para la venta
+
+Se demuestra:
+- Encapsulación y uso de getters/setters
+- Paso de objetos por referencia
+- Integración con Visual para interacción/alertas/reportes
+- Validaciones ligadas a: HU07, HU08
+===============================================================================
+*/
 #include "Administrador.h"
 #include <iostream>
 #include <fstream>

@@ -1,3 +1,20 @@
+/*
+Proyecto: Panaderia-Buen-Trigo (Gestión de Inventario, Recetas y Producción)
+
+Curso: Fundamentos de Programación Orientada a Objetos (FPOO)
+
+Autores:
+Felipe velasco - 2517245
+Jerónimo imbachi - 2517760
+Leonardo rosero - 2518313-3743
+Alejandro velez - 2521169-3743
+Julio Cesar Urbano Noguera - 2517931
+
+Resumen:
+Sistema para registrar recetas (HU01), registrar producción con verificación de inventario (HU02),
+consultar stock de panes (HU03), administrar y consultar inventario de ingredientes (HU04, HU05),
+emitir alertas de reposición (HU06) y generar resúmenes/exports de stock e inventario (HU07, HU08).
+*/
 #include <iostream>
 #include "Encargado_Inventario.h"
 #include "Panadero.h"
@@ -112,13 +129,11 @@ int main() {
             std::string nombre{};
             std::string apellido{};
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            // std::cout<<"Digita tu nombre: ";
-            // getline(std::cin, nombre);
-            // std::cout<<"Digita tu apellido: ";
-            // getline(std::cin, apellido);
+            std::cout<<"Digita tu nombre: ";
+            getline(std::cin, nombre);
+            std::cout<<"Digita tu apellido: ";
+            getline(std::cin, apellido);
             // Actualiza el encargado existente (NO lo vuelvas a declarar)
-            nombre="Luis";
-            apellido="Velasco";
             Encargado_Inventario Encargado1(nombre, apellido);
             Encargado1.IniciarSesion();
             int opcion2{};

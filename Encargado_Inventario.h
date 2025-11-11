@@ -1,3 +1,19 @@
+/* 
+================================================================================
+TARJETA CRC
+================================================================================
+Nombre de la clase: Encargado_Inventario
+Responsabilidades:
+- Registrar/actualizar/eliminar ingredientes del sistema
+- Consultar existencias y niveles mínimos; emitir alertas de reposición
+- Generar y visualizar resúmenes de inventario y stock
+Colaboradores:
+- Ingrediente
+- Receta
+- Visual
+- Administrador
+================================================================================
+*/
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_ENCARGADO_INVENTARIO_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_ENCARGADO_INVENTARIO_H
 

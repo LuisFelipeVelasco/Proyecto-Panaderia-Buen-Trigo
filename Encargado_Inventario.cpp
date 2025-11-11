@@ -1,3 +1,18 @@
+/*
+===============================================================================
+                 IMPLEMENTACIÓN DE LA CLASE Encargado_Inventario
+===============================================================================
+Rol en el dominio:
+- Gestionar ingredientes; ver alertas de reposición; resúmenes (HU04-HU07)
+- Registrar/actualizar/eliminar ingredientes del inventario
+- Consultar existencias y emitir alertas de bajo stock
+
+Se demuestra:
+- Encapsulación y uso de getters/setters
+- Paso de objetos por referencia
+- Validaciones ligadas a: HU04, HU05, HU06, HU07
+===============================================================================
+*/
 #include "Encargado_Inventario.h"
 #include "Receta.h"
 #include <sstream>

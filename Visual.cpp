@@ -1,3 +1,15 @@
+/*
+===============================================================================
+                 IMPLEMENTACIÓN DE LA CLASE Visual
+===============================================================================
+Rol en el dominio:
+- Menús por rol de usuario; 
+- Patrón MVC: componente de Vista
+
+Se demuestra:
+- Integración con Visual para interacción
+===============================================================================
+*/
 #include "Visual.h"
 #include <iostream>
 

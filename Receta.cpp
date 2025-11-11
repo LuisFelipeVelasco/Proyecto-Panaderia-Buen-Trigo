@@ -1,3 +1,18 @@
+/*
+===============================================================================
+                 IMPLEMENTACIÓN DE LA CLASE Receta
+===============================================================================
+Rol en el dominio:
+- Lista de ingredientes y proporciones por tipo de pan (HU01, HU02)
+- Valida disponibilidad de insumos antes de producir
+- Calcula consumos para descontar del inventario
+
+Se demuestra:
+- Encapsulación y uso de getters/setters
+- Paso de objetos por referencia
+- Validaciones ligadas a: HU01, HU02
+===============================================================================
+*/
 #include <fstream>
 #include <iostream>
 #include <ostream>

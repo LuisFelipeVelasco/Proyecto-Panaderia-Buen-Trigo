@@ -1,3 +1,18 @@
+/* 
+================================================================================
+TARJETA CRC
+================================================================================
+Nombre de la clase: Receta
+Responsabilidades:
+- Mantener ingredientes y proporciones por tipo de pan
+- Validar disponibilidad de insumos antes de producir
+- Calcular consumos para descontar del inventario
+Colaboradores:
+- Ingrediente
+- Panadero
+- Administrador
+================================================================================
+*/
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_RECETA_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_RECETA_H
 

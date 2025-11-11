@@ -1,3 +1,19 @@
+/*
+===============================================================================
+                 IMPLEMENTACIÓN DE LA CLASE Panadero
+===============================================================================
+Rol en el dominio:
+- Administrar recetas (HU01); registrar producción con verificación de inventario (HU02)
+- Consultar stock (HU03)
+- Orquestar flujos de producción y registro
+
+Se demuestra:
+- Encapsulación y uso de getters/setters
+- Paso de objetos por referencia
+- Integración con Visual para interacción/alertas/reportes
+- Validaciones ligadas a: HU01, HU02, HU03
+===============================================================================
+*/
 #include "Panadero.h"
 
 #include <algorithm>

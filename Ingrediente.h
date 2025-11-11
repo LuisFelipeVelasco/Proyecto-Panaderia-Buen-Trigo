@@ -1,3 +1,17 @@
+/* 
+================================================================================
+TARJETA CRC
+================================================================================
+Nombre de la clase: Ingrediente
+Responsabilidades:
+- Representar un insumo (nombre, unidad de medida, cantidad, mínimo)
+- Actualizar cantidades por consumos y reposiciones
+- Exponer datos para validaciones de disponibilidad/alertas
+Colaboradores:
+- Encargado_Inventario
+- Receta
+================================================================================
+*/
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_INGREDIENTE_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_INGREDIENTE_H
 

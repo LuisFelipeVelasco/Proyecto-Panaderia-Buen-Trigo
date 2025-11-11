@@ -1,3 +1,18 @@
+/* 
+================================================================================
+TARJETA CRC
+================================================================================
+Nombre de la clase: Panadero
+Responsabilidades:
+- Registrar y modificar recetas con ingredientes y cantidades
+- Registrar producciones descontando insumos del inventario
+- Consultar el stock de panes para planear producciones
+Colaboradores:
+- Receta
+- Ingrediente
+- Visual
+================================================================================
+*/
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_PANADERO_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_PANADERO_H
 #include "Personal.h"

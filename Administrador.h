@@ -1,3 +1,18 @@
+/* 
+================================================================================
+TARJETA CRC
+================================================================================
+Nombre de la clase: Administrador
+Responsabilidades:
+- Consultar el resumen global de inventario y stock
+- Exportar reportes a .txt para control y seguimiento
+- Supervisar la disponibilidad para la venta
+Colaboradores:
+- Receta
+- Encargado_Inventario
+- Visual
+================================================================================
+*/
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_ADMINISTRADOR_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_ADMINISTRADOR_H
 #include "Personal.h"
