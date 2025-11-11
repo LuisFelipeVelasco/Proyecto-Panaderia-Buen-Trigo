@@ -1,4 +1,3 @@
-// Administrador.cpp
 #include "Administrador.h"
 #include <iostream>
 #include <fstream>
@@ -113,7 +112,7 @@ std::string Administrador::stockProductosTerminados() {
 // -----------------------------
 // ConsultarInventario -> imprime en consola
 // -----------------------------
-void Administrador::ConsultarInventario() {
+void Administrador::ResumenInventarioYStock() {
     std::cout << resumenInventario() << std::endl;
     std::cout << stockProductosTerminados() << std::endl;
 

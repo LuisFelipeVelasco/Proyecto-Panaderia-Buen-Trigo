@@ -1,19 +1,13 @@
-//
-// Created by luisf on 2/11/2025.
-//
-
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_PANADERO_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_PANADERO_H
 #include "Personal.h"
 #include "Receta.h"
-#include "Ingrediente.h"
 #include "Encargado_Inventario.h"
 
 class Panadero: public Personal {
 protected:
     const std::string fileName = "Recetas.txt";
     const std::string fileProduccion = "STOCK.txt";
-
 
     // Función auxiliar privada
     std::string obtenerNombreIngrediente(int id);
@@ -25,7 +19,6 @@ public:
     void eliminarReceta(std::string NombreReceta);
     void registrarNuevaProduccion(const Receta& receta, int cantidad);
     void RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado);
-
 
     std::string consultarStock();
     std::vector<Receta> GetRecetas();

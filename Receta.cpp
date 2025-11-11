@@ -1,7 +1,3 @@
-//
-// Created by luisf on 2/11/2025.
-//
-
 #include <fstream>
 #include <iostream>
 #include <ostream>
@@ -31,7 +27,6 @@ void Receta::mostrarReceta() {
 std::vector<Ingrediente> Receta::getRecetas() const{
     return Ingredientes;
 }
-
 
 std::string Receta::trim(std::string s) {
     size_t i = 0, j = s.size();

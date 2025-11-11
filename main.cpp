@@ -1,7 +1,3 @@
-//
-// Created by luisf on 2/11/2025.
-//
-
 #include <iostream>
 #include "Encargado_Inventario.h"
 #include "Panadero.h"
@@ -9,23 +5,16 @@
 #include "Ingrediente.h"
 #include "Receta.h"
 #include "Administrador.h"
+#include "Visual.h"
 
 int main() {
     Encargado_Inventario Encargado1("sin asignar", "sin asignar");
-
+    Visual visual;
     int opcion1=0;
     do {
-        std::cout << "\n===== Sistema de Gestion : Panaderia =====\n";
-        std::cout << "1. Panadero\n";
-        std::cout << "2. Encargado del inventario\n";
-        std::cout << "3. Administrador\n";
-        std::cout << "4. Salir\n";
-        std::cout << "Escoge tu rol  o Salir: ";
-        std::cin >> opcion1;
-
+        opcion1=visual.DesplegarMenuDeUsuario();
 
         if (opcion1==1) {
-
             std::string nombre{};
             std::string apellido{};
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -35,18 +24,9 @@ int main() {
             getline(std::cin, apellido);
             Panadero Panadero1(nombre, apellido);
             Panadero1.IniciarSesion();
-
             int opcion{};
             do {
-                std::cout<<"\n";
-                std::cout << "1. Registrar Receta\n";
-                std::cout << "2. Modificar Receta\n";
-                std::cout << "3. Eliminar Receta\n ";
-                std::cout << "4. Registrar Nueva Produccion\n";
-                std::cout << "5. Consultar STOCK\n";
-                std::cout << "6. Salir\n";
-                std::cout << "Panadero , escoge que quieres hacer: ";
-                std::cin >> opcion;
+                opcion=visual.DesplegarMenuDePanadero();
 
                 if (opcion==1) {
                     std::vector<Ingrediente> receta ={};
@@ -59,17 +39,7 @@ int main() {
                     int Cantidad{};
 
                     do {
-                        std::cout << "1. Harina\n";
-                        std::cout << "2. Azucar\n";
-                        std::cout << "3. Sal\n";
-                        std::cout << "4. Levadura\n";
-                        std::cout << "5. Huevos\n";
-                        std::cout << "6. Canela\n";
-                        std::cout << "7. Queso\n";
-                        std::cout << "8. Mantequilla\n";
-                        std::cout << "9. No mas ingredientes\n";
-                        std::cout << "Escoge el ingrediente de tu receta: ";
-                        std::cin >> Id;
+                        Id=visual.DesplegarInventario();
                         if (Id!=9) {
                             std::cout<<"Digita la cantidad del ingrediente (gramos): ";
                             std::cin>>Cantidad;
@@ -118,14 +88,12 @@ int main() {
                             break;
                         }
                     }
-
                     if (!r) {
                         std::cout << "❌ La receta no existe.\n";
                         continue;
                     }
                     // Primero intenta producir (descontar inventario)
                     Panadero1.RegistrarProduccion(nombreReceta, cantidad, Encargado1);
-
                     // Registrar producción en archivo
                     Panadero1.registrarNuevaProduccion(*r, cantidad);
                 }
@@ -133,53 +101,36 @@ int main() {
                     std::cout << "\n=== STOCK ACTUAL ===\n";
                     std::string stock = Panadero1.consultarStock();
                     std::cout << stock << std::endl;
-
                 }
-
-
+                else if (opcion==6) {
+                    Panadero1.CerrarSesion();
+                    opcion1=4;
+                }
             }while (opcion!=6);
         }
         else if (opcion1==2) {
             std::string nombre{};
             std::string apellido{};
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout<<"Digita tu nombre: ";
-            getline(std::cin, nombre);
-            std::cout<<"Digita tu apellido: ";
-            getline(std::cin, apellido);
+            // std::cout<<"Digita tu nombre: ";
+            // getline(std::cin, nombre);
+            // std::cout<<"Digita tu apellido: ";
+            // getline(std::cin, apellido);
             // Actualiza el encargado existente (NO lo vuelvas a declarar)
+            nombre="Luis";
+            apellido="Velasco";
             Encargado_Inventario Encargado1(nombre, apellido);
             Encargado1.IniciarSesion();
-
             int opcion2{};
             do {
-                std::cout<<"\n===== MENU ENCARGADO DE INVENTARIO =====\n";
-                std::cout<<"1. Registrar Ingredientes Disponibles\n";
-                std::cout<<"2. Consultar Inventario\n";
-                std::cout<<"3. Ver ingredientes por debajo del tope\n";
-                std::cout<<"4. Editar Ingredientes\n";
-                std::cout<<"5. Eliminar Ingredientes\n";
-                std::cout<<"6. Ver Resumen del inventario y del Stock\n";
-                std::cout<<"7. Salir\n";
-                std::cout<<"Seleccione una opcion: ";
-                std::cin>>opcion2;
+                opcion2=visual.DesplegarMenuDeGestorDeInventario();
 
                 if (opcion2==1) {
                     std::vector<Ingrediente> ingredientes{};
                     std::string unidad{};
                     int Id{}, Cantidad{}, Unidad{};
                     do {
-                        std::cout << "1. Harina\n";
-                        std::cout << "2. Azucar\n";
-                        std::cout << "3. Sal\n";
-                        std::cout << "4. Levadura\n";
-                        std::cout << "5. Huevos\n";
-                        std::cout << "6. Canela\n";
-                        std::cout << "7. Queso\n";
-                        std::cout << "8. Mantequilla\n";
-                        std::cout << "9. No mas ingredientes\n";
-                        std::cout << "Escoge el ingrediente: ";
-                        std::cin >> Id;
+                        Id=visual.DesplegarInventario();
                         if (Id!=9) {
                             std::cout << "1. Libra\n";
                             std::cout << "2. Gramo\n";
@@ -191,8 +142,6 @@ int main() {
 
                             Ingrediente ingredientenuevo(Id,Unidad,Cantidad);
                             ingredientes.push_back(ingredientenuevo);
-
-
                         }
                     }while (Id!=9);
                     Encargado1.RegistarNuevoIngrediente(ingredientes);
@@ -210,20 +159,17 @@ int main() {
                     Encargado1.EliminarIngrediente();
                 }
                 else if (opcion2==6) {
+                    Encargado1.ResumenInventarioYStock();
+
                 }
                 else if (opcion2==7) {
                     Encargado1.CerrarSesion();
                     opcion1=4;
                 }
 
-
-
-
-
             }while (opcion2!=7);
         }
         else if (opcion1==3) {
-
             std::string nombre{};
             std::string apellido{};
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -231,36 +177,24 @@ int main() {
             getline(std::cin, nombre);
             std::cout<<"Digita tu apellido: ";
             getline(std::cin, apellido);
-
             Administrador Administrador1(nombre, apellido);
             Administrador1.IniciarSesion();
-
             int opcion3{};
             do {
-                std::cout<<"\n===== MENU ADMINISTRADOR =====\n";
-                std::cout<<"1. Consultar Inventario\n";
-                std::cout<<"2. Imprimir reporte\n";
-                std::cout<<"3. Ver resumen inventario / stock\n";
-                std::cout<<"4. Salir\n";
-                std::cout<<"Seleccione una opcion: ";
-                std::cin>>opcion3;
-
+                opcion3=visual.DesplegarMenuDeAdministrador();
                 if (opcion3==1) {
-                    Administrador1.ConsultarInventario();
+                    Administrador1.ResumenInventarioYStock();
                 }
                 else if (opcion3==2) {
                     // imprimir reporte
                     Administrador1.exportarReporte();
                 }
                 else if (opcion3==3) {
-                    // resumen
+                    Administrador1.CerrarSesion();
+                    opcion1=4;
                 }
-
-            }while (opcion3!=4);
+            }while (opcion3!=3);
         }
-
-
-
 
     }while (opcion1!=4);
 }

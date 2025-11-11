@@ -1,7 +1,3 @@
-//
-// Created by luisf on 2/11/2025.
-//
-
 #ifndef PROYECTO_PANADERIA_BUEN_TRIGO_RECETA_H
 #define PROYECTO_PANADERIA_BUEN_TRIGO_RECETA_H
 

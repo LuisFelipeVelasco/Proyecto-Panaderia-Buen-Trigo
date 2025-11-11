@@ -12,8 +12,6 @@ add_executable(BuenTrigo
         Encargado_Inventario.h
         Ingrediente.cpp
         Ingrediente.h
-        Inventario.cpp
-        Inventario.h
         main.cpp
         Panadero.cpp
         Panadero.h
