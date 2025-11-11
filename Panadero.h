@@ -33,7 +33,7 @@ public:
     void modificarReceta(std::string nombreReceta);
     void eliminarReceta(std::string NombreReceta);
     void registrarNuevaProduccion(const Receta& receta, int cantidad);
-    void RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado);
+    bool RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado);
 
     std::string consultarStock();
     std::vector<Receta> GetRecetas();

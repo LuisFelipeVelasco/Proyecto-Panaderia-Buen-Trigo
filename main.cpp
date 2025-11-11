@@ -110,9 +110,9 @@ int main() {
                         continue;
                     }
                     // Primero intenta producir (descontar inventario)
-                    Panadero1.RegistrarProduccion(nombreReceta, cantidad, Encargado1);
+                    int ValidadorProduccion=Panadero1.RegistrarProduccion(nombreReceta, cantidad, Encargado1);
                     // Registrar producción en archivo
-                    Panadero1.registrarNuevaProduccion(*r, cantidad);
+                    if (ValidadorProduccion) Panadero1.registrarNuevaProduccion(*r, cantidad);
                 }
                 else if (opcion == 5) {
                     std::cout << "\n=== STOCK ACTUAL ===\n";

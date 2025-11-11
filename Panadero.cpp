@@ -23,8 +23,6 @@ Se demuestra:
 #include "Receta.h"
 #include <cstdio>
 #include <sstream>
-#include <Encargado_Inventario.h>
-
 
 Panadero::Panadero(const std::string& nombre, const std::string& apellido)
 : Personal(nombre, apellido) {
@@ -221,7 +219,7 @@ std::string Panadero::obtenerNombreIngrediente(int id) {
         default: return "Desconocido";
     }
 }
-void Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado){
+bool Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado){
 
     auto recetas = GetRecetas();
     Receta* r = nullptr;
@@ -236,7 +234,7 @@ void Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad
 
     if(!r){
         std::cout << "❌ La receta no existe.\n";
-        return;
+        return false;
     }
 
     // Obtener ingredientes
@@ -251,12 +249,19 @@ void Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad
     // Descontar ingredientes
     if(!encargado.descontarIngredientes(totalNecesario, cantidad)){
         std::cout << "🚨 No hay suficientes ingredientes.\n";
-        return;
+        return false;
     }
 
-    std::cout << "✅ Se produjeron " << cantidad
-              << " unidades de " << nombreReceta << "\n";
+
+    else {
+        std::cout << "✅ Se produjeron " << cantidad
+                      << " unidades de " << nombreReceta << "\n";
+          return true;
+    }
+
 }
+
+
 void Panadero::registrarNuevaProduccion(const Receta& receta, int cantidad) {
     std::ofstream file(fileProduccion, std::ios::app);
 
