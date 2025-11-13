@@ -1,6 +1,8 @@
 /*
 Proyecto: Panaderia-Buen-Trigo (Gestión de Inventario, Recetas y Producción)
 
+Enlace Github: https://github.com/LuisFelipeVelasco/Proyecto-Panaderia-Buen-Trigo.git
+
 Curso: Fundamentos de Programación Orientada a Objetos (FPOO)
 
 Autores:
