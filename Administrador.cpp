@@ -19,7 +19,7 @@ Se demuestra:
 #include <sstream>
 #include <algorithm>
 
-Administrador::Administrador(std::string& nombre, std::string& apellido)
+Administrador::Administrador(const std::string& nombre,  const std::string& apellido)
     : Personal(nombre, apellido) { }
 
 // -----------------------------
@@ -123,7 +123,7 @@ bool Administrador::exportarReporte(std::string& mensaje) {
 
     // encabezado
     out << "===== REPORTE DE INVENTARIO =====\n\n";
-    out << "Administrador: " << nombre << " " << apellido << "\n\n";
+    out << "Administrador: " << getNombre() << " " << getApellido() << "\n\n";
 
     // ingredientes
     out << resumenInventario() << "\n";

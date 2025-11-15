@@ -28,7 +28,7 @@ protected:
     std::string obtenerNombreIngrediente(int id);
 
 public:
-    Administrador(std::string& nombre, std::string& apellido);
+    Administrador(const std::string& nombre, const std::string& apellido);
     std::string resumenInventario();
     std::string stockProductosTerminados();
     bool exportarReporte(std::string& mensaje);
