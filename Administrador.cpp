@@ -20,7 +20,7 @@ Se demuestra:
 #include <algorithm>
 
 Administrador::Administrador(std::string& nombre, std::string& apellido)
-    : Personal(nombre, apellido), nombre(nombre), apellido(apellido) { }
+    : Personal(nombre, apellido) { }
 
 // -----------------------------
 // obtenerNombreIngrediente

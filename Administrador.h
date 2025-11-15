@@ -22,8 +22,6 @@ Colaboradores:
 
 class Administrador: public Personal {
 protected:
-std::string nombre;
-std::string apellido;
     const std::string fileName = "Inventario.txt";
 
     // Función auxiliar privada
