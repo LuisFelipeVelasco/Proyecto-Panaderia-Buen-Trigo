@@ -27,8 +27,6 @@ class Personal {
     Personal()=default;
     std::string getNombre();
     std::string getApellido();
-    void IniciarSesion();
-    void CerrarSesion();
 };
 
 

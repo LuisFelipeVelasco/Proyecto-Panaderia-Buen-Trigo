@@ -19,7 +19,6 @@ Colaboradores:
 
 #include "Personal.h"
 #include "Ingrediente.h"
-#include "iostream"
 #include "vector"
 #include <fstream>
 
@@ -36,18 +35,17 @@ public:
     Encargado_Inventario(const std::string& nombre,const std::string& apellido);
     Encargado_Inventario() : Personal("", "") {}
 
-    void RegistarNuevoIngrediente(std::vector<Ingrediente>& ingredientes);
+    bool RegistarNuevoIngrediente(std::vector<Ingrediente>& ingredientes);
 
-    // Nuevos métodos implementados
-    void ConsultarInventario();           // Requerimiento 1
-    void VerificarInventarioBajo();       // Requerimiento 2
-    void EliminarIngrediente();           // Requerimiento 3
-    void EditarIngrediente();             // Requerimiento 4
+    // Métodos refactorizados - retornan datos en lugar de imprimir
+    std::string ConsultarInventario();
+    std::string VerificarInventarioBajo();
+    bool EliminarIngrediente(int idEliminar, std::string& mensaje);
+    bool EditarIngrediente(int idEditar, int nuevaCantidad, int nuevaUnidad, std::string& mensaje);
     bool descontarIngredientes(const std::vector<Ingrediente> &ingredientesNecesarios, int cantidad);
 
     std::string resumenInventario();
     std::string stockProductosTerminados();
-    void ResumenInventarioYStock();
 };
 
 

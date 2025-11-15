@@ -17,6 +17,7 @@ Colaboradores:
 #define PROYECTO_PANADERIA_BUEN_TRIGO_ADMINISTRADOR_H
 #include "Personal.h"
 #include <fstream>
+#include <vector>
 
 
 class Administrador: public Personal {
@@ -32,8 +33,7 @@ public:
     Administrador(std::string& nombre, std::string& apellido);
     std::string resumenInventario();
     std::string stockProductosTerminados();
-    void exportarReporte();
-    void ResumenInventarioYStock();
+    bool exportarReporte(std::string& mensaje);
 };
 
 

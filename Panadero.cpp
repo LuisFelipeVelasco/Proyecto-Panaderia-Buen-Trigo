@@ -17,7 +17,6 @@ Se demuestra:
 #include "Panadero.h"
 
 #include <algorithm>
-#include <iostream>
 #include <fstream>
 #include "Ingrediente.h"
 #include "Receta.h"
@@ -30,20 +29,19 @@ Panadero::Panadero(const std::string& nombre, const std::string& apellido)
     f.close();
 }
 
-void Panadero::RegistrarReceta(Receta receta) {
-    std::ofstream file(fileName , std::ios::app);
-    if (file.is_open()) {
-
-        file <<receta.getNombre()<<":";
-        for (Ingrediente i : receta.getRecetas()) {
-            file << i.getId() << "," << i.getCantidad()  << "; ";
-        }
-        file<<"\n";
-        file.close();
-        std::cout << "Datos guardados exitosamente.\n";
-    } else {
-        std::cerr << "Error: No se pudo abrir el archivo de datos.\n";
+bool Panadero::RegistrarReceta(Receta receta) {
+    std::ofstream file(fileName, std::ios::app);
+    if (!file.is_open()) {
+        return false;
     }
+
+    file << receta.getNombre() << ":";
+    for (Ingrediente i : receta.getRecetas()) {
+        file << i.getId() << "," << i.getCantidad() << "; ";
+    }
+    file << "\n";
+    file.close();
+    return true;
 }
 
 
@@ -58,20 +56,17 @@ std::vector<Receta> Panadero::GetRecetas() {
         if (limpia.empty()) continue;
         try {
             recetas.emplace_back(Receta::parseLine(limpia));
-        } catch (const std::exception& e) {
-            std::cerr << "Error al parsear linea: " << limpia
-                      << " (" << e.what() << ")\n";
+        } catch (const std::exception&) {
         }
     }
     return recetas;
 }
 
 
-void Panadero::eliminarReceta(std::string NombreReceta) {
+bool Panadero::eliminarReceta(std::string NombreReceta, std::string& mensaje) {
     std::vector<Receta> recetas = GetRecetas();
     std::string objetivo = Receta::trim(NombreReceta);
 
-    // borrar del vector (sin referencias en lambda)
     size_t antes = recetas.size();
     recetas.erase(
         std::remove_if(recetas.begin(), recetas.end(),
@@ -80,110 +75,15 @@ void Panadero::eliminarReceta(std::string NombreReceta) {
     );
 
     if (recetas.size() == antes) {
-        std::cout << "No se encontró la receta: " << objetivo << "\n";
-        return;
+        mensaje = "Receta no encontrada: " + NombreReceta;
+        return false;
     }
 
-    std::string tmp = fileName + ".tmp";
-    std::ofstream out(tmp, std::ios::trunc);
-    if (!out.is_open()) { std::cerr << "Error al crear archivo temporal.\n"; return; }
-
-    // Escribir todo otra vez (copias, sin refs)
-    for (auto r : recetas) {
-        out << r.getNombre() << ": ";
-        auto vec = r.getRecetas();
-        for (auto ing : vec) {
-            out << ing.getId() << "," << ing.getCantidad() << "; ";
-        }
-        out << "\n";
-    }
-    out.close();
-
-    std::remove(fileName.c_str());
-    if (std::rename(tmp.c_str(), fileName.c_str()) != 0) {
-        std::cerr << "Error al reemplazar el archivo original.\n";
-        return;
-    }
-    std::cout << "Receta '" << objetivo << "' eliminada correctamente.\n";
-}
-
-// NUEVO: Modificar receta (cambiar cantidad de ingredientes)
-void Panadero::modificarReceta(std::string nombreReceta) {
-    std::vector<Receta> recetas = GetRecetas();
-    std::string objetivo = Receta::trim(nombreReceta);
-
-    bool encontrada = false;
-    int indice = -1;
-
-    // Buscar la receta
-    for (size_t i = 0; i < recetas.size(); i++) {
-        if (Receta::trim(recetas[i].getNombre()) == objetivo) {
-            encontrada = true;
-            indice = i;
-            break;
-        }
-    }
-
-    if (!encontrada) {
-        std::cout << "No se encontró la receta: " << objetivo << "\n";
-        return;
-    }
-
-    // Mostrar ingredientes de la receta
-    std::cout << "\n===== Modificar Receta: " << objetivo << " =====\n";
-    std::cout << "Ingredientes actuales:\n";
-
-    auto ingredientes = recetas[indice].getRecetas();
-    for (size_t i = 0; i < ingredientes.size(); i++) {
-        std::cout << (i+1) << ". " << obtenerNombreIngrediente(ingredientes[i].getId())
-                  << " - Cantidad: " << ingredientes[i].getCantidad() << " gramos\n";
-    }
-
-    std::cout << "\n¿Desea modificar la cantidad de algún ingrediente? (1=Sí, 0=No): ";
-    int opcion;
-    std::cin >> opcion;
-
-    if (opcion != 1) {
-        std::cout << "Modificación cancelada.\n";
-        return;
-    }
-
-    std::cout << "Seleccione el número del ingrediente a modificar (1-" << ingredientes.size() << "): ";
-    int numIngrediente;
-    std::cin >> numIngrediente;
-
-    if (numIngrediente < 1 || numIngrediente > (int)ingredientes.size()) {
-        std::cout << "Número de ingrediente inválido.\n";
-        return;
-    }
-
-    std::cout << "Ingrediente seleccionado: "
-              << obtenerNombreIngrediente(ingredientes[numIngrediente-1].getId()) << "\n";
-    std::cout << "Cantidad actual: " << ingredientes[numIngrediente-1].getCantidad() << " gramos\n";
-    std::cout << "Nueva cantidad (en gramos): ";
-    int nuevaCantidad;
-    std::cin >> nuevaCantidad;
-
-    // Crear nuevo vector de ingredientes con la modificación
-    std::vector<Ingrediente> nuevosIngredientes;
-    for (size_t i = 0; i < ingredientes.size(); i++) {
-        if ((int)i == numIngrediente - 1) {
-            nuevosIngredientes.push_back(Ingrediente(ingredientes[i].getId(), nuevaCantidad));
-        } else {
-            nuevosIngredientes.push_back(ingredientes[i]);
-        }
-    }
-
-    // Actualizar la receta en el vector
-    std::string nombre = recetas[indice].getNombre();
-    recetas[indice] = Receta(nombre, nuevosIngredientes);
-
-    // Escribir todas las recetas de nuevo al archivo
     std::string tmp = fileName + ".tmp";
     std::ofstream out(tmp, std::ios::trunc);
     if (!out.is_open()) {
-        std::cerr << "Error al crear archivo temporal.\n";
-        return;
+        mensaje = "Error al abrir archivo temporal";
+        return false;
     }
 
     for (auto r : recetas) {
@@ -197,15 +97,74 @@ void Panadero::modificarReceta(std::string nombreReceta) {
     out.close();
 
     std::remove(fileName.c_str());
-    if (std::rename(tmp.c_str(), fileName.c_str()) != 0) {
-        std::cerr << "Error al reemplazar el archivo original.\n";
-        return;
-    }
-
-    std::cout << "✓ Receta '" << objetivo << "' modificada correctamente.\n";
+    std::rename(tmp.c_str(), fileName.c_str());
+    
+    mensaje = "✓ Receta eliminada: " + NombreReceta;
+    return true;
 }
 
-// Función auxiliar para obtener nombre del ingrediente
+bool Panadero::modificarReceta(const std::string& nombreOriginal, const Receta& recetaActualizada, std::string& mensaje) {
+    std::vector<Receta> recetas = GetRecetas();
+    std::string objetivo = Receta::trim(nombreOriginal);
+    
+    bool encontrada = false;
+    for (auto& r : recetas) {
+        if (Receta::trim(r.getNombre()) == objetivo) {
+            encontrada = true;
+            break;
+        }
+    }
+    
+    if (!encontrada) {
+        mensaje = "Receta no encontrada: " + nombreOriginal;
+        return false;
+    }
+    
+    // Check for duplicate name (if renaming)
+    std::string nuevoNombre = Receta::trim(recetaActualizada.getNombre());
+    if (nuevoNombre != objetivo) {
+        for (const auto& r : recetas) {
+            std::string existente = Receta::trim(r.getNombre());
+            if (existente == nuevoNombre) {
+                mensaje = "Ya existe una receta con el nombre: " + nuevoNombre;
+                return false;
+            }
+        }
+    }
+    
+    // Replace the recipe
+    for (auto& r : recetas) {
+        if (Receta::trim(r.getNombre()) == objetivo) {
+            r = recetaActualizada;
+            break;
+        }
+    }
+    
+    // Write updated list to file
+    std::string tmp = fileName + ".tmp";
+    std::ofstream out(tmp, std::ios::trunc);
+    if (!out.is_open()) {
+        mensaje = "Error al abrir archivo temporal";
+        return false;
+    }
+    
+    for (const auto& r : recetas) {
+        out << r.getNombre() << ": ";
+        auto vec = r.getRecetas();
+        for (const auto& ing : vec) {
+            out << ing.getId() << "," << ing.getCantidad() << "; ";
+        }
+        out << "\n";
+    }
+    out.close();
+    
+    std::remove(fileName.c_str());
+    std::rename(tmp.c_str(), fileName.c_str());
+    
+    mensaje = "✓ Receta modificada: " + nombreOriginal + " → " + recetaActualizada.getNombre();
+    return true;
+}
+
 std::string Panadero::obtenerNombreIngrediente(int id) {
     switch(id) {
         case 1: return "Harina";
@@ -219,12 +178,12 @@ std::string Panadero::obtenerNombreIngrediente(int id) {
         default: return "Desconocido";
     }
 }
+
 bool Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado){
 
     auto recetas = GetRecetas();
     Receta* r = nullptr;
 
-    // Buscar receta
     for(auto &rc : recetas){
         if(rc.getNombre() == nombreReceta){
             r = &rc;
@@ -233,32 +192,21 @@ bool Panadero::RegistrarProduccion(const std::string& nombreReceta, int cantidad
     }
 
     if(!r){
-        std::cout << "❌ La receta no existe.\n";
         return false;
     }
 
-    // Obtener ingredientes
     auto lista = r->Receta::getIngredientes();
     std::vector<Ingrediente> totalNecesario;
 
-    // Multiplicar ingredientes
     for(const auto &i : lista){
         totalNecesario.emplace_back(i.getId(), i.getCantidad() * cantidad);
     }
 
-    // Descontar ingredientes
     if(!encargado.descontarIngredientes(totalNecesario, cantidad)){
-        std::cout << "🚨 No hay suficientes ingredientes.\n";
         return false;
     }
 
-
-    else {
-        std::cout << "✅ Se produjeron " << cantidad
-                      << " unidades de " << nombreReceta << "\n";
-          return true;
-    }
-
+    return true;
 }
 
 
@@ -266,19 +214,17 @@ void Panadero::registrarNuevaProduccion(const Receta& receta, int cantidad) {
     std::ofstream file(fileProduccion, std::ios::app);
 
     if (!file.is_open()) {
-        std::cerr << "Error: No se pudo abrir STOCK.txt\n";
         return;
     }
 
     file << receta.getNombre() << " , " << cantidad << " unidades\n";
     file.close();
-
-    std::cout << "Producción registrada exitosamente ✅\n";
 }
+
 std::string Panadero::consultarStock() {
     std::ifstream file(fileProduccion);
     if (!file.is_open()) {
-        return "🚨 No se pudo abrir el archivo de stock.";
+        return "No se pudo abrir el archivo de stock.";
     }
 
     std::string linea;
@@ -291,7 +237,7 @@ std::string Panadero::consultarStock() {
     file.close();
 
     if (contenido.empty()) {
-        return "📦 Stock vacío. Aún no hay producciones registradas.";
+        return "Stock vacío. Aún no hay producciones registradas.";
     }
 
     return contenido;

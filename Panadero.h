@@ -29,9 +29,9 @@ protected:
 
 public:
     Panadero(const std::string& nombre,const std::string& apellido);
-    void RegistrarReceta(Receta receta);
-    void modificarReceta(std::string nombreReceta);
-    void eliminarReceta(std::string NombreReceta);
+    bool RegistrarReceta(Receta receta);
+    bool modificarReceta(const std::string& nombreOriginal, const Receta& recetaActualizada, std::string& mensaje);
+    bool eliminarReceta(std::string NombreReceta, std::string& mensaje);
     void registrarNuevaProduccion(const Receta& receta, int cantidad);
     bool RegistrarProduccion(const std::string& nombreReceta, int cantidad, Encargado_Inventario &encargado);
 

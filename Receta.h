@@ -28,7 +28,6 @@ private:
 public:
     Receta(std::string& Nombre, std::vector<Ingrediente>& ingrediente);
     ~Receta();
-    void mostrarReceta();
     std::string getNombre() const;
     std::vector<Ingrediente> getRecetas() const;
     const std::vector<Ingrediente>& getIngredientes() const;

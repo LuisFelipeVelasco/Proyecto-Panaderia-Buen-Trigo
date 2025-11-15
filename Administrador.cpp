@@ -15,10 +15,8 @@ Se demuestra:
 ===============================================================================
 */
 #include "Administrador.h"
-#include <iostream>
 #include <fstream>
 #include <sstream>
-#include <iomanip>
 #include <algorithm>
 
 Administrador::Administrador(std::string& nombre, std::string& apellido)
@@ -43,22 +41,16 @@ std::string Administrador::obtenerNombreIngrediente(int id) {
 
 // -----------------------------
 // resumenInventario
-// Lee Ingredientes.txt (id,cantidad,unidad)
+// Lee Inventario.txt y retorna string formateado
 // -----------------------------
 std::string Administrador::resumenInventario() {
     std::ostringstream out;
-    std::ifstream fileIng(fileName); // fileName declarado en el .h como "Ingredientes.txt"
+    std::ifstream fileIng(fileName);
     if (!fileIng.is_open()) {
-        out << "⚠ No se pudo abrir " << fileName << "\n";
-        return out.str();
+        return "⚠ No se pudo abrir " + fileName;
     }
 
     out << "=== INVENTARIO DE INGREDIENTES ===\n";
-    out << std::left << std::setw(20) << "Ingrediente"
-        << std::setw(12) << "Cantidad"
-        << std::setw(10) << "Unidad" << "\n";
-    out << "---------------------------------------------\n";
-
     std::string line;
     while (std::getline(fileIng, line)) {
         if (line.empty()) continue;
@@ -69,8 +61,6 @@ std::string Administrador::resumenInventario() {
         char delim;
 
         if (!(ss >> id >> delim >> cantidad >> delim >> unidad)) {
-            // Si el parseo falla, intentar parsing más tolerante:
-            // por ejemplo "1, 500, 2"
             std::replace(line.begin(), line.end(), ',', ' ');
             std::stringstream ss2(line);
             if (!(ss2 >> id >> cantidad >> unidad)) continue;
@@ -79,9 +69,7 @@ std::string Administrador::resumenInventario() {
         std::string nombre = obtenerNombreIngrediente(id);
         std::string unidadStr = (unidad == 1) ? "Libras" : "Gramos";
 
-        out << std::left << std::setw(20) << nombre
-            << std::setw(12) << cantidad
-            << std::setw(10) << unidadStr << "\n";
+        out << nombre << ": " << cantidad << " " << unidadStr << "\n";
     }
 
     fileIng.close();
@@ -90,21 +78,17 @@ std::string Administrador::resumenInventario() {
 
 // -----------------------------
 // stockProductosTerminados
-// Lee STOCK.txt (Nombre,Numero)
+// Lee STOCK.txt y retorna string formateado
 // -----------------------------
 std::string Administrador::stockProductosTerminados() {
     std::ostringstream out;
-    const std::string stockFileName = "STOCK.txt"; // coincide con el zip
+    const std::string stockFileName = "STOCK.txt";
     std::ifstream fileStock(stockFileName);
     if (!fileStock.is_open()) {
-        out << "⚠ No se pudo abrir " << stockFileName << "\n";
-        return out.str();
+        return "⚠ No se pudo abrir " + stockFileName;
     }
 
     out << "=== STOCK PRODUCTOS TERMINADOS ===\n";
-    out << std::left << std::setw(25) << "Producto" << std::setw(10) << "Cantidad" << "\n";
-    out << "---------------------------------------------\n";
-
     std::string line;
     while (std::getline(fileStock, line)) {
         if (line.empty()) continue;
@@ -114,66 +98,27 @@ std::string Administrador::stockProductosTerminados() {
         std::string nombre = line.substr(0, comma);
         std::string cantidadStr = line.substr(comma + 1);
 
-        // limpiar espacios iniciales en nombre
+        // limpiar espacios iniciales
         while (!nombre.empty() && (nombre.front() == ' ' || nombre.front() == '\t')) nombre.erase(0,1);
         while (!cantidadStr.empty() && (cantidadStr.front() == ' ' || cantidadStr.front() == '\t')) cantidadStr.erase(0,1);
 
-        out << std::left << std::setw(25) << nombre << std::setw(10) << cantidadStr << "\n";
+        out << nombre << ": " << cantidadStr << "\n";
     }
 
     fileStock.close();
     return out.str();
 }
 
-// -----------------------------
-// ConsultarInventario -> imprime en consola
-// -----------------------------
-void Administrador::ResumenInventarioYStock() {
-    std::cout << resumenInventario() << std::endl;
-    std::cout << stockProductosTerminados() << std::endl;
-
-    // Pregunta adicional opcional (si deseas mantener comportamiento igual a Encargado)
-    std::cout << "\n¿Desea consultar un ingrediente específico? (1=Si, 0=No): ";
-    int opcion = 0;
-    if (std::cin >> opcion && opcion == 1) {
-        std::cout << "Seleccione el ingrediente (1-8): ";
-        int idBuscar = 0;
-        std::cin >> idBuscar;
-
-        // Re-abrir archivo para buscar
-        std::ifstream fileIng(fileName);
-        bool encontrado = false;
-        std::string line;
-        while (std::getline(fileIng, line)) {
-            if (line.empty() || line.find(',') == std::string::npos) continue;
-            std::stringstream ss(line);
-            int id = 0, cantidad = 0, unidad = 0;
-            char delim;
-            if (!(ss >> id >> delim >> cantidad >> delim >> unidad)) continue;
-
-            if (id == idBuscar) {
-                std::string nombre = obtenerNombreIngrediente(id);
-                std::string unidadStr = (unidad == 1) ? "Libras" : "Gramos";
-                std::cout << "\n=== " << nombre << " ===\n";
-                std::cout << "Cantidad disponible: " << cantidad << " " << unidadStr << "\n";
-                encontrado = true;
-                break;
-            }
-        }
-        fileIng.close();
-        if (!encontrado) std::cout << "Ingrediente no encontrado en el inventario.\n";
-    }
-}
 
 // -----------------------------
 // exportarReporte -> escribe Reporte_Inventario.txt
 // -----------------------------
-void Administrador::exportarReporte() {
+bool Administrador::exportarReporte(std::string& mensaje) {
     const std::string outFile = "Reporte_Inventario.txt";
     std::ofstream out(outFile);
     if (!out.is_open()) {
-        std::cerr << "❌ Error: no se pudo crear " << outFile << "\n";
-        return;
+        mensaje = "Error: no se pudo crear " + outFile;
+        return false;
     }
 
     // encabezado
@@ -189,5 +134,6 @@ void Administrador::exportarReporte() {
     out << "===== FIN DEL REPORTE =====\n";
     out.close();
 
-    std::cout << "✅ Reporte generado: " << outFile << "\n";
+    mensaje = "✅ Reporte generado: " + outFile;
+    return true;
 }

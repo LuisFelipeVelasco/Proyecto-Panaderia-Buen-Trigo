@@ -28,16 +28,6 @@ std::string Receta::getNombre () const{
     return Nombre;
 }
 
-void Receta::mostrarReceta() {
-
-    std::cout<<"Receta registrada:"<<std::endl<<std::endl;
-    std::cout<<"======= "<<Nombre<<" ======"<<std::endl;
-     for (Ingrediente i : Ingredientes) {
-         std::cout<<"Ingrediente:"<<i.getId()<<std::endl;
-         std::cout<<"Cantidad:"<<i.getCantidad()<<std::endl;
-    }
-
-}
 
 std::vector<Ingrediente> Receta::getRecetas() const{
     return Ingredientes;
